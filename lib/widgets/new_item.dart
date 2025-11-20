@@ -14,7 +14,9 @@ class _NewItemState extends State<NewItem>{
       appBar: AppBar(
         title: Text("Add a new item..."),
       ),
-      body: Padding(padding: EdgeInsets.all()))
+      body: Padding(padding: EdgeInsets.all(12),
+        child: Text("Form Goes Here")
+      ),
     );
   }
 }
