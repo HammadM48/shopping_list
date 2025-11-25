@@ -69,5 +69,3 @@ class _NewItemState extends State<NewItem>{
     );
   }
 }
-
-//Added new row with buttonsAdded new row with buttons
