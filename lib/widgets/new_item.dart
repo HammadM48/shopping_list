@@ -54,6 +54,13 @@ class _NewItemState extends State<NewItem>{
                       ,)
                   ], onChanged: (value){}),
                 )
+              ],),
+              const SizedBox(height:12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                TextButton(onPressed: (){}, child: const Text("Reset")),
+                ElevatedButton(onPressed: (){}, child: Text("Add Item"))
               ],)
             ],
           ),
@@ -62,3 +69,5 @@ class _NewItemState extends State<NewItem>{
     );
   }
 }
+
+//Added new row with buttonsAdded new row with buttons
