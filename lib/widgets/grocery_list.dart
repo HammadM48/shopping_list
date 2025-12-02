@@ -20,7 +20,7 @@ class _GroceryListState extends State<GroceryList> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Your Groceries"),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.add_box))],
+        actions: [IconButton(onPressed: _addItem, icon: Icon(Icons.add_box))],
       ),
       body:ListView.builder(
         itemCount:groceryItems.length,
