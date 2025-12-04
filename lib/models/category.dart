@@ -1,7 +1,7 @@
 //enum Category
 import 'package:flutter/material.dart';
 
-enum Categories{
+enum Categories {
   vegetables,
   fruit,
   meat,
@@ -11,10 +11,11 @@ enum Categories{
   spices,
   convenience,
   hygiene,
-  other
+  other,
 }
+
 //Class category
-class Category{
+class Category {
   const Category(this.title, this.color);
   final String title;
   final Color color;
