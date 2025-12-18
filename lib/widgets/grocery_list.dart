@@ -17,6 +17,7 @@ class GroceryList extends StatefulWidget {
 class _GroceryListState extends State<GroceryList> {
   List<GroceryItem> _groceryItems = [];
   var _isLoading = true;
+  String? _error = "";
   @override
   void initState() {
     super.initState();
@@ -24,9 +25,14 @@ class _GroceryListState extends State<GroceryList> {
   }
 
   void _loadItems() async {
-    final url = Uri.https('shopping-list-19b71-default-rtdb.firebaseio.com', 'shopping-list.json',);
+    final url = Uri.https('shopping-list-19b71-default-rtdb.firebaseio.com', 'shopping-list.json');
     final response = await http.get(url);
-    //print(response.body);
+    //print(response.statusCode);
+    if(response.statusCode > 400){
+      setState(() {
+        _error = "Failed to fetch data. Try again later";
+      });
+    }
     final Map<String, dynamic> listData = json.decode(response.body);
     final List<GroceryItem> loadItems = [];
     for (final item in listData.entries) {
@@ -63,13 +69,22 @@ class _GroceryListState extends State<GroceryList> {
     });
   }
 
-  void _removeItem(GroceryItem item) {
+  void _removeItem(GroceryItem item) async {
+    final index = _groceryItems.indexOf(item);
     setState(() {
       _groceryItems.remove(item);
     });
-    for (var i = 0; i < _groceryItems.length; i++) {
-      print(_groceryItems[i].name);
+    final url = Uri.https('shopping-list-19b71-default-rtdb.firebaseio.com', 'shopping-list/${item.id}.json');
+    var response = await http.delete(url);  
+    if(response.statusCode > 400)
+    {
+      setState(() {
+        _groceryItems.insert(index, item);
+      });
     }
+    // for (var i = 0; i < _groceryItems.length; i++) {
+    //   print(_groceryItems[i].name);
+    // }
   }
 
   @override
@@ -80,6 +95,10 @@ class _GroceryListState extends State<GroceryList> {
     if(_isLoading)
     {
       content = const Center(child: CircularProgressIndicator());
+    }
+    if(_error != null)
+    {
+      content = Center(child: Text(_error!));
     }
     if (_groceryItems.isNotEmpty) {
       content = ListView.builder(
@@ -101,12 +120,11 @@ class _GroceryListState extends State<GroceryList> {
         ),
       );
     }
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text("Your Groceries"),
-        actions: [
-          IconButton(onPressed: _addItem, icon: const Icon(Icons.add_box)),
-        ],
+        actions: [ IconButton(onPressed: _addItem, icon: const Icon(Icons.add_box))],
       ),
       body: content,
     );
